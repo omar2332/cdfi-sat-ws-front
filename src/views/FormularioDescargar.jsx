@@ -61,7 +61,7 @@ export const FormularioDescargar = () =>{
             }
 
             axios({
-                url: 'https://cors-anywhere.herokuapp.com/https://cdfi-sat-ws-back.herokuapp.com/login', //your url
+                url: 'https://cdfi-sat-ws-back.herokuapp.com/login', //your url
                 //url: 'http://127.0.0.1:5000/login', //your url
                 method: 'POST',
                 responseType: 'blob', // important
