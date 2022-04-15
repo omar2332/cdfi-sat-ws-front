@@ -1,6 +1,7 @@
-import React, {  useState } from 'react';
+import React, {  Fragment, useState } from 'react';
 import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker';
+import Spinner from 'react-bootstrap/Spinner'
 
 export const FormularioDescargar = () =>{
     
@@ -10,7 +11,7 @@ export const FormularioDescargar = () =>{
     const [key,setKey] = useState("")
     const [fechaInicio,setFechaInicio] = useState(new Date())
     const [fechaFin,setFechaFin] = useState(new Date())
-
+    const [cargando,setCargando] = useState(false)
 
 
     
@@ -48,6 +49,7 @@ export const FormularioDescargar = () =>{
     }
     
     function download(){
+        setCargando(true)
         const axios = require('axios');
         let body = {
             rfc_req:rfc,
@@ -59,7 +61,8 @@ export const FormularioDescargar = () =>{
             }
 
             axios({
-                url: 'https://cors-anywhere.herokuapp.com/https://cdfi-sat-ws-back.herokuapp.com/login', //your url
+                //url: 'https://cors-anywhere.herokuapp.com/https://cdfi-sat-ws-back.herokuapp.com/login', //your url
+                url: 'http://127.0.0.1:5000/login', //your url
                 method: 'POST',
                 responseType: 'blob', // important
                 data:body
@@ -70,6 +73,7 @@ export const FormularioDescargar = () =>{
                 link.setAttribute('download', "document.xlsx"); //or any other extension
                 document.body.appendChild(link);
                 link.click();
+                setCargando(false)
             });
     }
 
@@ -125,7 +129,27 @@ export const FormularioDescargar = () =>{
                 </div>
 
                 <div className="mb-3 align-center">
-                    <button className='btn btn-primary' onClick={download}>Enviar</button>
+                    <button className='btn btn-primary' onClick={download} disabled={cargando}>
+                        
+                        {
+                            cargando ? 
+                            <Fragment> 
+                                <Spinner
+                                    as="span"
+                                    animation="grow"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                    />
+                                Loading...
+
+                            </Fragment>
+                            :  
+                            <Fragment> 
+                                Enviar
+                            </Fragment>
+                        }
+                    </button>
                 </div>
                 
             </div>
